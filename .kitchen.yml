@@ -1,0 +1,24 @@
+---
+driver:
+  name: vagrant
+  network:
+  - ["forwarded_port", {guest: 80, host: 8080}]
+
+provisioner:
+  name: chef_zero
+  always_update_cookbooks: true
+
+verifier:
+  name: inspec
+
+platforms:
+  - name: centos-7.2
+
+suites:
+  - name: default
+    run_list:
+      - recipe[test-kitchen-demo::default]
+    verifier:
+      inspec_tests:
+        - test/recipes
+    attributes:
