@@ -2,7 +2,15 @@
 driver:
   name: vagrant
   network:
-  - ["forwarded_port", {guest: 80, host: 8080}]
+  - ["forwarded_port", {guest: 80, host: 10080}]
+  driver_config:
+    ### Example of how to pull down a privately hosted box
+    # box: windows2008r2
+    # box_url: http://repo.company.com/virtualboxes/windows2008r2.box
+
+    # Set the proxy used by test kitchen from the environment
+    http_proxy: <%= ENV['http_proxy'] %>
+    https_proxy: <%= ENV['https_proxy'] %>
 
 provisioner:
   name: chef_zero
@@ -13,6 +21,8 @@ verifier:
 
 platforms:
   - name: centos-7.2
+  ### This would spin up the privately hosted Windows box
+  # - name: windows2008r2
 
 suites:
   - name: default
