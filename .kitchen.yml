@@ -8,13 +8,17 @@ driver:
     # box: windows2008r2
     # box_url: http://repo.company.com/virtualboxes/windows2008r2.box
 
-    # Set the proxy used by test kitchen from the environment
+    # Set the proxy used by Vagrant to download boxes
     http_proxy: <%= ENV['http_proxy'] %>
     https_proxy: <%= ENV['https_proxy'] %>
 
 provisioner:
   name: chef_zero
   always_update_cookbooks: true
+
+  # Set the proxy used inside the VM to download chef-client
+  http_proxy: <%= ENV['http_proxy'] %>
+  https_proxy: <%= ENV['https_proxy'] %>
 
 verifier:
   name: inspec
@@ -32,3 +36,8 @@ suites:
       inspec_tests:
         - test/recipes
     attributes:
+      chef-client:
+        config:
+          # Allow chef-client to access the proxy during converge
+          http_proxy: <%= ENV['http_proxy'] %>
+          https_proxy: <%= ENV['http_proxy'] %>
